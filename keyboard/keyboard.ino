@@ -42,19 +42,19 @@ constexpr int num_half_pins = 4;
 constexpr int first_col[] = {KD1, KD2, KD3, KD4};
 
 // second hit
-constexpr int second_col[] = { KD5, KD6, KD7, KD8 };
+constexpr int second_col[] = {KD5, KD6, KD7, KD8};
 
 constexpr int selector_pins[] = {SA1, SA2, SA3, SA4, SA5};
 constexpr int num_selector_pins = 5;
 
-enum Range { LO = 0, MID, HI};
+enum Range { LO = 0, MID, HI };
 constexpr Range ranges[] = {Range::LO, Range::MID, Range::HI};
 
 // rows in range
-constexpr int rows [] = {8, 8, 6};
-constexpr int range_offsets [] = {0,
-                                  rows[1] * num_half_pins,
-                                  rows[0] * num_half_pins + rows[1] * num_half_pins};
+constexpr int rows[] = {8, 8, 6};
+constexpr int range_offsets[] = {0, rows[1] * num_half_pins,
+                                 rows[0] * num_half_pins +
+                                     rows[1] * num_half_pins};
 
 /*****************************************************************************/
 /*                                 Keys/Notes                                */
@@ -73,7 +73,7 @@ constexpr double max_velocity = 0.00030;
 /*****************************************************************************/
 
 void select_range(Range range) {
-  switch(range) {
+  switch (range) {
   case Range::LO:
     digitalWrite(RS1, LOW);
     digitalWrite(RS2, LOW);
@@ -118,15 +118,15 @@ int get_midi_note(Range range, int row, int col) {
 }
 
 char midi_velocity(double velocity) {
-  return (constrain(velocity, min_velocity, max_velocity) - min_velocity) / max_velocity * 127;
+  return (constrain(velocity, min_velocity, max_velocity) - min_velocity) /
+         max_velocity * 127;
 }
-
 
 /*****************************************************************************/
 /*                                   State                                   */
 /*****************************************************************************/
 unsigned long S1[num_keys]; // timer value for first hit or 0
-bool S2[num_keys]; // whether key is pressed
+bool S2[num_keys];          // whether key is pressed
 bool SSTE_PRESSED = false;
 
 void setup() {
@@ -190,30 +190,30 @@ void loop() {
       select_row(row);
 
       // read rows
-      for(int i= 0; i < num_half_pins; i++) {
+      for (int i = 0; i < num_half_pins; i++) {
         const bool s1_was_triggered = !(S1[key] == 0);
         if (!digitalRead(first_col[i])) { // key pressed
-          if(!s1_was_triggered) { // has not been depreesed before
+          if (!s1_was_triggered) {        // has not been depreesed before
             S1[key] = micros();
           }
 
           // look for second fire
           const bool s2_was_triggered = S2[key];
           if (!digitalRead(second_col[i])) { // stage 2 pressed
-            if(!s2_was_triggered){
+            if (!s2_was_triggered) {
               S2[key] = true;
 
-              auto velocity = 1/static_cast<double>(micros() - S1[key]);
+              auto velocity = 1 / static_cast<double>(micros() - S1[key]);
               send_note_down(key, velocity);
             }
-          } else if(s2_was_triggered) { // stage 2 released
+          } else if (s2_was_triggered) { // stage 2 released
             S2[key] = false;
             send_note_up(key);
           }
-        } else if(s1_was_triggered) { // s1 released
+        } else if (s1_was_triggered) { // s1 released
           S1[key] = 0;
 
-          if(S2[key]) {
+          if (S2[key]) {
             S2[key] = false;
             send_note_up(key);
           }
