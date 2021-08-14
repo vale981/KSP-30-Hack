@@ -35,8 +35,8 @@ constexpr int SSTE = 9;
 /*                                Convenience                                */
 /*****************************************************************************/
 constexpr int col_pins[] = {KD1, KD2, KD3, KD4, KD5, KD6, KD7, KD8};
-constexpr int num_col_pins = 8;
-constexpr int num_half_pins = 4;
+constexpr int num_col_pins = sizeof(col_pins) / sizeof(col_pins[0]);
+constexpr int num_half_pins = num_col_pins / 2;
 
 // first hit
 constexpr int first_col[] = {KD1, KD2, KD3, KD4};
@@ -45,7 +45,7 @@ constexpr int first_col[] = {KD1, KD2, KD3, KD4};
 constexpr int second_col[] = {KD5, KD6, KD7, KD8};
 
 constexpr int selector_pins[] = {SA1, SA2, SA3, SA4, SA5};
-constexpr int num_selector_pins = 5;
+constexpr int num_selector_pins = sizeof(selector_pins) / sizeof(selector_pins[0]);
 
 enum Range { LO = 0, MID, HI };
 constexpr Range ranges[] = {Range::LO, Range::MID, Range::HI};
@@ -180,7 +180,7 @@ void send_pedal(bool down) {
 }
 
 void loop() {
-  int key = 0;
+  int key = 1;
 
   // keys
   for (const auto range : ranges) {
