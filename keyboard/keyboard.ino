@@ -160,11 +160,16 @@ void setup() {
   digitalWrite(SEL_C, LOW);
 }
 
-void send_note(int key, double velocity) {
-  Serial.print("Key: ");
+void send_note_down(int key, double velocity) {
+  Serial.print("Key DOWN: ");
   Serial.print(key);
   Serial.print(" ");
   Serial.println(midi_velocity(velocity), DEC);
+}
+
+void send_note_up(int key) {
+  Serial.print("Key UP: ");
+  Serial.println(key);
 }
 
 void send_pedal(bool down) {
@@ -172,7 +177,6 @@ void send_pedal(bool down) {
     Serial.println("SSTE DOWN");
   else
     Serial.println("SSTE UP");
-
 }
 
 void loop() {
@@ -185,18 +189,33 @@ void loop() {
     for (int row = 0; row < rows[range]; row++) {
       select_row(row);
 
-      // read first row
+      // read rows
       for(int i= 0; i < num_half_pins; i++) {
-        if (!digitalRead(first_col[i])) {
-          if(S1[key] == 0) {
+        const bool s1_was_triggered = !(S1[key] == 0);
+        if (!digitalRead(first_col[i])) { // key pressed
+          if(!s1_was_triggered) { // has not been depreesed before
             S1[key] = micros();
-          } else {
-            if (!S2[key] && !digitalRead(second_col[i])) {
+          }
+
+          // look for second fire
+          const bool s2_was_triggered = S2[key];
+          if (!digitalRead(second_col[i])) { // stage 2 pressed
+            if(!s2_was_triggered){
               S2[key] = true;
 
               auto velocity = 1/static_cast<double>(micros() - S1[key]);
-              send_note(key, velocity);
+              send_note_down(key, velocity);
             }
+          } else if(s2_was_triggered) { // stage 2 released
+            S2[key] = false;
+            send_note_up(key);
+          }
+        } else if(s1_was_triggered) { // s1 released
+          S1[key] = 0;
+
+          if(S2[key]) {
+            S2[key] = false;
+            send_note_up(key);
           }
         }
 
