@@ -28,6 +28,9 @@ constexpr int SA5 = 8;
 constexpr int RS1 = SA4;
 constexpr int RS2 = SA5;
 
+// sustain
+constexpr int SSTE = 9;
+
 /*****************************************************************************/
 /*                                Convenience                                */
 /*****************************************************************************/
@@ -118,8 +121,13 @@ char midi_velocity(double velocity) {
   return (constrain(velocity, min_velocity, max_velocity) - min_velocity) / max_velocity * 127;
 }
 
+
+/*****************************************************************************/
+/*                                   State                                   */
+/*****************************************************************************/
 unsigned long S1[num_keys]; // timer value for first hit or 0
 bool S2[num_keys]; // whether key is pressed
+bool SSTE_PRESSED = false;
 
 void setup() {
   /***************************************************************************/
@@ -142,6 +150,9 @@ void setup() {
     S2[i] = false;
   }
 
+  // Pedal
+  pinMode(SSTE, INPUT_PULLUP);
+
   digitalWrite(RS1, LOW);
   digitalWrite(RS2, LOW);
   digitalWrite(SEL_A, LOW);
@@ -149,10 +160,25 @@ void setup() {
   digitalWrite(SEL_C, LOW);
 }
 
+void send_note(int key, double velocity) {
+  Serial.print("Key: ");
+  Serial.print(key);
+  Serial.print(" ");
+  Serial.println(midi_velocity(velocity), DEC);
+}
+
+void send_pedal(bool down) {
+  if (down)
+    Serial.println("SSTE DOWN");
+  else
+    Serial.println("SSTE UP");
+
+}
 
 void loop() {
   int key = 0;
 
+  // keys
   for (const auto range : ranges) {
     select_range(range);
 
@@ -169,9 +195,7 @@ void loop() {
               S2[key] = true;
 
               auto velocity = 1/static_cast<double>(micros() - S1[key]);
-              Serial.print(key);
-              Serial.print(" ");
-              Serial.println(midi_velocity(velocity), DEC);
+              send_note(key, velocity);
             }
           }
         }
@@ -179,5 +203,11 @@ void loop() {
         key++;
       }
     }
+  }
+
+  // pedals
+  if (digitalRead(SSTE) != SSTE_PRESSED) {
+    SSTE_PRESSED = !SSTE_PRESSED;
+    send_pedal(SSTE_PRESSED);
   }
 }
