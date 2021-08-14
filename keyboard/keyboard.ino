@@ -180,7 +180,7 @@ void send_pedal(bool down) {
 }
 
 void loop() {
-  int key = 1;
+  int key = 0;
 
   // keys
   for (const auto range : ranges) {
