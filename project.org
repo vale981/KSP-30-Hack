@@ -1,4 +1,5 @@
 * Pinout
+** Keyboard.
 | Header | Arduino | Name | Function | Color  |
 |--------+---------+------+----------+--------|
 |      1 | A0      | KD1  | S1       |        |
@@ -16,3 +17,30 @@
 |     13 | D8      | SA5  | Mult 2   | Black  |
 |     14 | 5V      | 5V   |          | White  |
 |     15 | GND     | GND  |          | Yellow |
+
+See [[file:resources/KSP10, KSP20, KSP30.pdf][service manual]].
+#+DOWNLOADED: screenshot @ 2021-08-14 10:28:26
+[[file:Pinout/2021-08-14_10-28-26_screenshot.png]]
+
+#+DOWNLOADED: screenshot @ 2021-08-14 10:28:49
+[[file:Pinout/2021-08-14_10-28-49_screenshot.png]]
+*** Mulitplexer
+
+#+DOWNLOADED: screenshot @ 2021-08-14 10:29:29
+[[file:Pinout/2021-08-14_10-29-29_screenshot.png]]
+
+
+#+DOWNLOADED: screenshot @ 2021-08-14 10:29:44
+[[file:Pinout/2021-08-14_10-29-44_screenshot.png]]
+
+See [[file:resources/multiplexer.pdf][pdf]].
+** Pedals
+With $2k\Omega$ resistors.
+| Header | Arduino | Name | Function | Color          |
+|--------+---------+------+----------+----------------|
+|      2 | GND     | GND  |          | Brown          |
+|      4 | D9      | SSTE | Sustain  | Violet and Red |
+
+
+#+DOWNLOADED: screenshot @ 2021-08-14 10:27:48
+[[file:Pinout/2021-08-14_10-27-48_screenshot.png]]
