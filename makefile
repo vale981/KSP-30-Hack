@@ -22,6 +22,10 @@ deps:
 
 clean:
 	$(RM) $(HEX) $(ELF)
-	$(RM) -r $(B_PATH)
+	$(RM) $(B_PATH)
 
 .PHONY: all upload deps clean
+
+.PHONY: serial
+serial:
+	sudo picocom $(PORT)

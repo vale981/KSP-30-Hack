@@ -36,10 +36,10 @@ See [[file:resources/KSP10, KSP20, KSP30.pdf][service manual]].
 See [[file:resources/multiplexer.pdf][pdf]].
 ** Pedals
 With $2k\Omega$ resistors.
-| Header | Arduino | Name | Function | Color          |
-|--------+---------+------+----------+----------------|
-|      2 | GND     | GND  |          | Brown          |
-|      4 | D9      | SSTE | Sustain  | Violet and Red |
+| Header | Arduino | Pro Micro | Name | Function | Color  |
+|--------+---------+-----------+------+----------+--------|
+|      2 | GND     | GND       | GND  |          | Blue   |
+|      4 | D9      | A3/21     | SSTE | Sustain  | Violet |
 
 
 #+DOWNLOADED: screenshot @ 2021-08-14 10:27:48

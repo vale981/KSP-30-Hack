@@ -1,6 +1,6 @@
 #include <USB-MIDI.h>
-
-USBMIDI_CREATE_DEFAULT_INSTANCE();
+#define Sprintln(...) (Serial.println(__VA_ARGS__))
+#define Sprint(...) (Serial.print(__VA_ARGS__))
 
 /*****************************************************************************/
 /*                                    Pins                                   */
@@ -22,7 +22,8 @@ constexpr int first_col[] = {KD1, KD2, KD3, KD4};
 constexpr int second_col[] = {KD5, KD6, KD7, KD8};
 
 constexpr int selector_pins[] = {SA1, SA2, SA3, SA4, SA5};
-constexpr int num_selector_pins = sizeof(selector_pins) / sizeof(selector_pins[0]);
+constexpr int num_selector_pins =
+    sizeof(selector_pins) / sizeof(selector_pins[0]);
 
 enum Range { LO = 0, MID, HI };
 constexpr Range ranges[] = {Range::LO, Range::MID, Range::HI};
@@ -38,6 +39,7 @@ constexpr int range_offsets[] = {0, rows[1] * num_half_pins,
 /*****************************************************************************/
 constexpr int midi_base = 21;
 constexpr int num_keys = 88;
+constexpr midi::Channel channel = 1;
 
 /*****************************************************************************/
 /*                                  Velocity                                 */
@@ -95,8 +97,10 @@ int get_midi_note(Range range, int row, int col) {
 }
 
 char midi_velocity(double velocity) {
-  return constrain((constrain(velocity, min_velocity, max_velocity) - min_velocity) /
-                   (max_velocity - min_velocity) * 127, 1, 127);
+  return constrain(
+      (constrain(velocity, min_velocity, max_velocity) - min_velocity) /
+          (max_velocity - min_velocity) * 127,
+      1, 127);
 }
 
 /*****************************************************************************/
@@ -105,6 +109,8 @@ char midi_velocity(double velocity) {
 unsigned long S1[num_keys]; // timer value for first hit or 0
 bool S2[num_keys];          // whether key is pressed
 bool SSTE_PRESSED = false;
+
+USBMIDI_CREATE_DEFAULT_INSTANCE();
 
 void setup() {
   /***************************************************************************/
@@ -140,28 +146,31 @@ void setup() {
   /*                                   Midi                                  */
   /***************************************************************************/
   MIDI.begin();
-  Serial.println("Keyboard ready.");
+  Sprintln("Keyboard ready.");
 }
 
 void send_note_down(int key, double velocity) {
-  Serial.print("Key DOWN: ");
-  Serial.print(key);
-  Serial.print(" ");
-  Serial.println(midi_velocity(velocity), DEC);
+  Sprint("Key DOWN: ");
+  Sprint(key);
+  Sprint(" ");
+  Sprintln(midi_velocity(velocity), DEC);
   MIDI.sendNoteOn(midi_base + key, midi_velocity(velocity), 1);
 }
 
 void send_note_up(int key) {
-  Serial.print("Key UP: ");
-  Serial.println(key);
+  Sprint("Key UP: ");
+  Sprintln(key);
   MIDI.sendNoteOff(midi_base + key, 55, 1);
 }
 
 void send_pedal(bool down) {
-  if (down)
-    Serial.println("SSTE DOWN");
-  else
-    Serial.println("SSTE UP");
+  if (down) {
+    Sprintln("SSTE DOWN");
+    MIDI.sendControlChange(64, 64, 1);
+  } else {
+    Sprintln("SSTE UP");
+    MIDI.sendControlChange(64, 63, 1);
+  }
 }
 
 void loop() {
@@ -210,7 +219,7 @@ void loop() {
   }
 
   // pedals
-  if (digitalRead(SSTE) != SSTE_PRESSED) {
+  if (!digitalRead(SSTE) != SSTE_PRESSED) {
     SSTE_PRESSED = !SSTE_PRESSED;
     send_pedal(SSTE_PRESSED);
   }
