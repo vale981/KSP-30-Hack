@@ -1,3 +1,7 @@
+#include <USB-MIDI.h>
+
+USBMIDI_CREATE_DEFAULT_INSTANCE();
+
 /*****************************************************************************/
 /*                                    Pins                                   */
 /*****************************************************************************/
@@ -106,7 +110,7 @@ void setup() {
   /***************************************************************************/
   /*                                  Serial                                 */
   /***************************************************************************/
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   /***************************************************************************/
   /*                                   Pins                                  */
@@ -131,6 +135,12 @@ void setup() {
   digitalWrite(SEL_A, LOW);
   digitalWrite(SEL_B, LOW);
   digitalWrite(SEL_C, LOW);
+
+  /***************************************************************************/
+  /*                                   Midi                                  */
+  /***************************************************************************/
+  MIDI.begin();
+  Serial.println("Keyboard ready.");
 }
 
 void send_note_down(int key, double velocity) {
@@ -138,6 +148,7 @@ void send_note_down(int key, double velocity) {
   Serial.print(key);
   Serial.print(" ");
   Serial.println(midi_velocity(velocity), DEC);
+  MIDI.sendNoteOn(midi_base + key, midi_velocity(velocity), 1);
 }
 
 void send_note_up(int key) {

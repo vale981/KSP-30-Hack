@@ -1,0 +1,3 @@
+[submodule "keyboard/lib/Arduino-USBMIDI"]
+	path = keyboard/lib/Arduino-USBMIDI
+	url = https://github.com/lathoub/Arduino-USBMIDI.git
