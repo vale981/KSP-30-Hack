@@ -42,8 +42,8 @@ constexpr int num_keys = 88;
 /*****************************************************************************/
 /*                                  Velocity                                 */
 /*****************************************************************************/
-constexpr double min_velocity = 0.00005;
-constexpr double max_velocity = 0.00030;
+constexpr double min_velocity = 0.00001;
+constexpr double max_velocity = 0.00024;
 
 /*****************************************************************************/
 /*                                Keyscanning                                */
@@ -95,8 +95,8 @@ int get_midi_note(Range range, int row, int col) {
 }
 
 char midi_velocity(double velocity) {
-  return (constrain(velocity, min_velocity, max_velocity) - min_velocity) /
-         max_velocity * 127;
+  return constrain((constrain(velocity, min_velocity, max_velocity) - min_velocity) /
+                   (max_velocity - min_velocity) * 127, 1, 127);
 }
 
 /*****************************************************************************/
