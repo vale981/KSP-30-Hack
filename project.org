@@ -1,22 +1,22 @@
 * Pinout
-** Keyboard.
-| Header | Arduino | Name | Function | Color  |
-|--------+---------+------+----------+--------|
-|      1 | A0      | KD1  | S1       |        |
-|      2 | A1      | KD2  | S1       |        |
-|      3 | A2      | KD3  | S1       |        |
-|      4 | A3      | KD4  | S1       |        |
-|      5 | A4      | KD5  | S2       | Red    |
-|      6 | A5      | KD6  | S2       | Grey   |
-|      7 | D2      | KD7  | S2       | Yellow |
-|      8 | D3      | KD8  | S2       | Purple |
-|      9 | D4      | SA1  | Select A | White  |
-|     10 | D5      | SA2  | Select B | Black  |
-|     11 | D6      | SA3  | Select C | Blue   |
-|     12 | D7      | SA4  | Mult 1   | Orange |
-|     13 | D8      | SA5  | Mult 2   | Black  |
-|     14 | 5V      | 5V   |          | White  |
-|     15 | GND     | GND  |          | Yellow |
+** Keyboard
+| Header | Arduino Nano | Pro Micro | PM NR | Name | Function | Color  |
+|--------+--------------+-----------+-------+------+----------+--------|
+|      1 | A0           |        RX |     0 | KD1  | S1       |        |
+|      2 | A1           |        TX |     1 | KD2  | S1       |        |
+|      3 | A2           |         2 |     2 | KD3  | S1       |        |
+|      4 | A3           |         3 |     3 | KD4  | S1       |        |
+|      5 | A4           |         4 |     4 | KD5  | S2       | Red    |
+|      6 | A5           |         5 |     5 | KD6  | S2       | Grey   |
+|      7 | D2           |         6 |     6 | KD7  | S2       | Yellow |
+|      8 | D3           |         7 |     7 | KD8  | S2       | Purple |
+|      9 | D4           |         8 |     8 | SA1  | Select A | White  |
+|     10 | D5           |         9 |     9 | SA2  | Select B | Black  |
+|     11 | D6           |        14 |    14 | SA3  | Select C | Blue   |
+|     12 | D7           |        15 |    15 | SA4  | Mult 1   | Orange |
+|     13 | D8           |        16 |    16 | SA5  | Mult 2   | Black  |
+|     14 | 5V           |        5V |       | 5V   |          | White  |
+|     15 | GND          |       GND |       | GND  |          | Yellow |
 
 See [[file:resources/KSP10, KSP20, KSP30.pdf][service manual]].
 #+DOWNLOADED: screenshot @ 2021-08-14 10:28:26
