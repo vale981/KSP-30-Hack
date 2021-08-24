@@ -7,8 +7,8 @@ ARDCLI  = arduino-cli
 SRCS    = $(wildcard *.c) $(wildcard *.cpp) $(wildcard *.ino)
 PRG     = $(shell basename `pwd`)
 B_PATH  = $(shell pwd)/build
-HEX     = $(PRG).$(subst :,.,$(FQBN)).hex
-ELF     = $(PRG).$(subst :,.,$(FQBN)).elf
+HEX     = $(B_PATH)/$(PRG).ino.hex
+ELF     = $(B_PATH)/$(PRG).ino.elf
 ARDLIBS = USB-MIDI@1.1.2
 
 $(HEX): $(SRCS)
@@ -22,5 +22,6 @@ deps:
 
 clean:
 	$(RM) $(HEX) $(ELF)
+	$(RM) -r $(B_PATH)
 
 .PHONY: all upload deps clean

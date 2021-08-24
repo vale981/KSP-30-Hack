@@ -154,6 +154,7 @@ void send_note_down(int key, double velocity) {
 void send_note_up(int key) {
   Serial.print("Key UP: ");
   Serial.println(key);
+  MIDI.sendNoteOff(midi_base + key, 55, 1);
 }
 
 void send_pedal(bool down) {
