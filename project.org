@@ -2,10 +2,10 @@
 ** Keyboard
 | Header | Arduino Nano | Pro Micro | PM NR | Name | Function | Color  |
 |--------+--------------+-----------+-------+------+----------+--------|
-|      1 | A0           |        RX |     0 | KD1  | S1       |        |
-|      2 | A1           |        TX |     1 | KD2  | S1       |        |
-|      3 | A2           |         2 |     2 | KD3  | S1       |        |
-|      4 | A3           |         3 |     3 | KD4  | S1       |        |
+|      1 | A0           |        RX |     0 | KD1  | S1       | Grey   |
+|      2 | A1           |        TX |     1 | KD2  | S1       | Purple |
+|      3 | A2           |         2 |     2 | KD3  | S1       | Brown  |
+|      4 | A3           |         3 |     3 | KD4  | S1       | Orange |
 |      5 | A4           |         4 |     4 | KD5  | S2       | Red    |
 |      6 | A5           |         5 |     5 | KD6  | S2       | Grey   |
 |      7 | D2           |         6 |     6 | KD7  | S2       | Yellow |
