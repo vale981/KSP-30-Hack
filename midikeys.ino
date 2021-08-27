@@ -1,6 +1,11 @@
 #include <USB-MIDI.h>
+#if DEBUG_SERIAL
 #define Sprintln(...) (Serial.println(__VA_ARGS__))
 #define Sprint(...) (Serial.print(__VA_ARGS__))
+#else
+#define Sprintln(...)
+#define Sprint(...)
+#endif
 
 /*****************************************************************************/
 /*                                    Pins                                   */
@@ -44,8 +49,8 @@ constexpr midi::Channel channel = 1;
 /*****************************************************************************/
 /*                                  Velocity                                 */
 /*****************************************************************************/
-constexpr double min_velocity = 0.00001;
-constexpr double max_velocity = 0.00024;
+constexpr double min_velocity = 0.000001;
+constexpr double max_velocity = 0.00015;
 
 /*****************************************************************************/
 /*                                Keyscanning                                */
@@ -116,7 +121,9 @@ void setup() {
   /***************************************************************************/
   /*                                  Serial                                 */
   /***************************************************************************/
+  #if DEBUG_SERIAL
   Serial.begin(115200);
+  #endif
 
   /***************************************************************************/
   /*                                   Pins                                  */
@@ -166,10 +173,10 @@ void send_note_up(int key) {
 void send_pedal(bool down) {
   if (down) {
     Sprintln("SSTE DOWN");
-    MIDI.sendControlChange(64, 64, 1);
+    MIDI.sendControlChange(64, 127, 1);
   } else {
     Sprintln("SSTE UP");
-    MIDI.sendControlChange(64, 63, 1);
+    MIDI.sendControlChange(64, 0, 1);
   }
 }
 

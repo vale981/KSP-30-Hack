@@ -12,7 +12,7 @@ ELF     = $(B_PATH)/$(PRG).ino.elf
 ARDLIBS = USB-MIDI@1.1.2
 
 $(HEX): $(SRCS)
-	$(ARDCLI) compile --fqbn $(FQBN) --build-path $(B_PATH)  $(CURDIR)
+	$(ARDCLI) compile --build-property build.extra_flags="-DDEBUG_SERIAL=$(DEBUG_SERIAL)" --fqbn $(FQBN) --build-path $(B_PATH) $(CURDIR)
 
 upload: $(HEX)
 	sudo $(ARDCLI) upload -v --fqbn $(FQBN) --input-dir $(B_PATH) -p $(PORT) $(CURDIR)
@@ -22,7 +22,7 @@ deps:
 
 clean:
 	$(RM) $(HEX) $(ELF)
-	$(RM) $(B_PATH)
+	$(RM) -r $(B_PATH)
 
 .PHONY: all upload deps clean
 
